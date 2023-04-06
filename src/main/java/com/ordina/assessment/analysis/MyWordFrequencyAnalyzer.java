@@ -4,15 +4,15 @@ import com.ordina.assessment.domains.MyWordFrequency;
 import com.ordina.assessment.domains.WordFrequency;
 import com.ordina.assessment.dto.TextDto;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class MyWordFrequencyAnalyzer{
+public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer{
 
+    @Override
     @GetMapping("api/highestfrequency")
     public int calculateHighestFrequency(@RequestBody TextDto textDto){
         String text = textDto.getText();
@@ -22,8 +22,9 @@ public class MyWordFrequencyAnalyzer{
         return sortedWords[0].getFrequency();
     }
 
+    @Override
     @GetMapping("api/frequency/{word}")
-    public int calculateFrequencyForWord (@RequestBody TextDto textDto, @PathVariable String word){
+    public int calculateFrequencyForWord(@RequestBody TextDto textDto, @PathVariable String word){
         String text = textDto.getText();
         HashMap<String, Integer> wordMap = getWordMap(text);
         String inputWord = word.toLowerCase();
@@ -31,8 +32,9 @@ public class MyWordFrequencyAnalyzer{
         return wordMap.get(inputWord);
     }
 
+    @Override
     @GetMapping("api/nmostfrequent/{n}")
-    public WordFrequency[] calculateMostFrequentNWords (@RequestBody TextDto textDto, @PathVariable int n){
+    public WordFrequency[] calculateMostFrequentNWords(@RequestBody TextDto textDto, @PathVariable int n){
         String text = textDto.getText();
         HashMap<String, Integer> wordMap = getWordMap(text);
         WordFrequency[] sortedWords = getSortedWords(wordMap);
