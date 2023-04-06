@@ -145,7 +145,7 @@ public class MyWordFrequencyAnalyzerTest {
 	@Test
 	public void myExampleCalculateMostFrequentFourWords(){
 		MyWordFrequencyAnalyzer myWordFrequencyAnalyzer = new MyWordFrequencyAnalyzer();
-		String testString = "The sun shines lala la over the the     q q q     ===!! la==ke";
+		String testString = "       \n \n   The sun shines lala la over the the     q q q     ===!! la==ke";
 		int wordAmount = 4;
 		TextDto testDto = new TextDto(testString);
 		myWordFrequencyAnalyzer.setData(testDto);
