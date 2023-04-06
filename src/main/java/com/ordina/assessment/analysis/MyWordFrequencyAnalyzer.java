@@ -35,6 +35,9 @@ public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer{
     @Override
     @GetMapping("api/nmostfrequent/{n}")
     public WordFrequency[] calculateMostFrequentNWords(@RequestBody TextDto textDto, @PathVariable int n){
+        if (n < 1){
+            throw new IllegalArgumentException("N should be at least 1");
+        }
         String text = textDto.getText();
         HashMap<String, Integer> wordMap = getWordMap(text);
         WordFrequency[] sortedWords = getSortedWords(wordMap);
