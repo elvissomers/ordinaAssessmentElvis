@@ -22,7 +22,7 @@ public class MyWordFrequencyAnalyzer{
     }
 
     @GetMapping("api/frequency/{word}")
-    public int calculateFrequencyForWord (@PathVariable String word){
+    public int calculateFrequencyForWord(@PathVariable String word){
         String inputWord = word.toLowerCase();
 
         return this.wordMap.get(inputWord);
@@ -30,6 +30,9 @@ public class MyWordFrequencyAnalyzer{
 
     @GetMapping("api/nmostfrequent/{n}")
     public WordFrequency[] calculateMostFrequentNWords (@PathVariable int n){
+        if (n < 1){
+            throw new IllegalArgumentException("N should be at least 1");
+        }
         return Arrays.copyOfRange(this.sortedWords, 0, n);
     }
 
