@@ -4,6 +4,7 @@ import com.ordina.assessment.domains.MyWordFrequency;
 import com.ordina.assessment.domains.WordFrequency;
 import com.ordina.assessment.dto.TextDto;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,27 +12,35 @@ import java.util.Map;
 
 @RestController
 public class MyWordFrequencyAnalyzer{
-    
+
     @GetMapping("api/highestfrequency")
-    public int calculateHighestFrequency(){
-        return this.sortedWords[0].getFrequency();
+    public int calculateHighestFrequency(@RequestBody TextDto textDto){
+        String text = textDto.getText();
+        HashMap<String, Integer> wordMap = getWordMap(text);
+        WordFrequency[] sortedWords = getSortedWords(wordMap);
+
+        return sortedWords[0].getFrequency();
     }
 
     @GetMapping("api/frequency/{word}")
-    public int calculateFrequencyForWord (@PathVariable String word){
+    public int calculateFrequencyForWord (@RequestBody TextDto textDto, @PathVariable String word){
+        String text = textDto.getText();
+        HashMap<String, Integer> wordMap = getWordMap(text);
         String inputWord = word.toLowerCase();
 
-        return this.wordMap.get(inputWord);
+        return wordMap.get(inputWord);
     }
 
     @GetMapping("api/nmostfrequent/{n}")
-    public WordFrequency[] calculateMostFrequentNWords (@PathVariable int n){
-        return Arrays.copyOfRange(this.sortedWords, 0, n);
+    public WordFrequency[] calculateMostFrequentNWords (@RequestBody TextDto textDto, @PathVariable int n){
+        String text = textDto.getText();
+        HashMap<String, Integer> wordMap = getWordMap(text);
+        WordFrequency[] sortedWords = getSortedWords(wordMap);
+
+        return Arrays.copyOfRange(sortedWords, 0, n);
     }
 
-    @PostMapping("api/text")
-    public void setData(@RequestBody TextDto textDto){
-        String text = textDto.getText();
+    public HashMap<String, Integer> getWordMap(String text){
         String lowerCaseText = text.toLowerCase().trim();
         String[] allWords = lowerCaseText.split("[^a-z]+");
 
@@ -46,18 +55,17 @@ public class MyWordFrequencyAnalyzer{
             }
         }
 
-        this.wordMap = wordMap;
-        getSortedWords(wordMap);
+        return wordMap;
     }
 
-    public void getSortedWords(HashMap<String, Integer> unsortedMap){
+    public WordFrequency[] getSortedWords(HashMap<String, Integer> unsortedMap){
         WordFrequency[] sortedWords = unsortedMap.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed()
                         .thenComparing(Map.Entry.comparingByKey()))
                 .map(entry -> new MyWordFrequency(entry.getKey(), entry.getValue()))
                 .toArray(WordFrequency[]::new);
 
-        this.sortedWords = sortedWords;
+        return sortedWords;
     }
 
 }
