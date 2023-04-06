@@ -11,11 +11,7 @@ import java.util.Map;
 
 @RestController
 public class MyWordFrequencyAnalyzer{
-
-    private HashMap<String, Integer> wordMap;
-
-    private WordFrequency[] sortedWords;
-
+    
     @GetMapping("api/highestfrequency")
     public int calculateHighestFrequency(){
         return this.sortedWords[0].getFrequency();
