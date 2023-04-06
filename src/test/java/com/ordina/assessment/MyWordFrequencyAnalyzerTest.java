@@ -162,6 +162,4 @@ public class MyWordFrequencyAnalyzerTest {
 		assertEquals("ke",myWordFrequencyAnalyzer.calculateMostFrequentNWords(wordAmount)[3].getWord());
 		assertEquals(1,myWordFrequencyAnalyzer.calculateMostFrequentNWords(wordAmount)[3].getFrequency());
 	}
-
-	//TEst to see if can commit
 }
