@@ -10,10 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("api")
 public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer{
 
     @Override
-    @GetMapping("api/highestfrequency")
+    @GetMapping("highestfrequency")
     public int calculateHighestFrequency(@RequestBody TextDto textDto){
         String text = textDto.getText();
         HashMap<String, Integer> wordMap = getWordMap(text);
@@ -23,7 +24,7 @@ public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer{
     }
 
     @Override
-    @GetMapping("api/frequency/{word}")
+    @GetMapping("frequency/{word}")
     public int calculateFrequencyForWord(@RequestBody TextDto textDto, @PathVariable String word){
         String text = textDto.getText();
         HashMap<String, Integer> wordMap = getWordMap(text);
@@ -33,7 +34,7 @@ public class MyWordFrequencyAnalyzer implements WordFrequencyAnalyzer{
     }
 
     @Override
-    @GetMapping("api/nmostfrequent/{n}")
+    @GetMapping("nmostfrequent/{n}")
     public WordFrequency[] calculateMostFrequentNWords(@RequestBody TextDto textDto, @PathVariable int n){
         if (n < 1){
             throw new IllegalArgumentException("N should be at least 1");
